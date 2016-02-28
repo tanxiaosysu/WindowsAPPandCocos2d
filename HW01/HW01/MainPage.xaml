@@ -1,0 +1,35 @@
+<Page
+    x:Class="HW01.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:HW01"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Height="800"
+    Width="600">
+
+    <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+      Orientation="Vertical">
+        <TextBox
+            x:Name="member"
+            Height="auto"
+            HorizontalAlignment="Center"
+            Margin="0,100,0,10"
+            TextWrapping="Wrap"
+            Width="400"/>
+        <Button
+            x:Name="button"
+            Content="Button"
+            Height="auto"
+            HorizontalAlignment="Stretch"
+            Margin="0,10,0,10"
+            Width="400" Click="button_Click"/>
+        <TextBlock
+            x:Name="words"
+            Height="300"
+            Margin="0,10,0,0"
+            TextWrapping="Wrap"
+            Width="400"/>
+    </StackPanel>
+</Page>
