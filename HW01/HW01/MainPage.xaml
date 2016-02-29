@@ -19,12 +19,19 @@
             TextWrapping="Wrap"
             Width="400"/>
         <Button
-            x:Name="button"
-            Content="Button"
+            x:Name="say"
+            Content="发言"
             Height="auto"
             HorizontalAlignment="Stretch"
             Margin="0,10,0,10"
-            Width="400" Click="button_Click"/>
+            Width="400" Click="say_Click"/>
+        <Button
+            x:Name="ack"
+            Content="确认"
+            Height="auto"
+            HorizontalAlignment="Stretch"
+            Margin="0,10,0,10"
+            Width="400" Click="ack_Click"/>
         <TextBlock
             x:Name="words"
             Height="300"

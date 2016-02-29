@@ -24,7 +24,7 @@ namespace HW01 {
         enum AnimalType { PIG, DOG, CAT };
 
         /* 委托 */
-        private delegate void AnimalSaying(object sender);
+        private delegate void AnimalSaying(object sender, myEventArgs e);
         /* 事件 */
         private event AnimalSaying Say;
 
@@ -34,7 +34,7 @@ namespace HW01 {
 
         /* 接口 */
         interface Animal {
-            void saying(object sender); /* 方法 */
+            void saying(object sender, myEventArgs e); /* 方法 */
         }
 
         class Pig : Animal {
@@ -44,8 +44,11 @@ namespace HW01 {
                 this.word = tb;
             }
 
-            public void saying(object sender) {
-                this.word.Text += "pig:I am a pig.\n";
+            public void saying(object sender, myEventArgs e) {
+                if (e.flag) {
+                    this.word.Text += "pig:"; /* 点击确认按钮时添加说话动物类型，下同 */
+                }
+                this.word.Text += "I am a pig.\n";
             }
         }
 
@@ -56,8 +59,11 @@ namespace HW01 {
                 this.word = tb;
             }
 
-            public void saying(object sender) {
-                this.word.Text += "dog:I am a dog.\n";
+            public void saying(object sender, myEventArgs e) {
+                if (e.flag) {
+                    this.word.Text += "dog:";
+                }
+                this.word.Text += "I am a dog.\n";
             }
         }
 
@@ -68,8 +74,11 @@ namespace HW01 {
                 this.word = tb;
             }
 
-            public void saying(object sender) {
-                this.word.Text += "cat:I am a cat.\n";
+            public void saying(object sender, myEventArgs e) {
+                if (e.flag) {
+                    this.word.Text += "cat:";
+                }
+                this.word.Text += "I am a cat.\n";
             }
         }
 
@@ -93,8 +102,36 @@ namespace HW01 {
         private Dog d;
         private Cat c;
 
-        /* 按钮点击 */
-        private void button_Click(object sender, RoutedEventArgs e) {
+        /* 发言按钮点击 */
+        private void say_Click(object sender, RoutedEventArgs e) {
+            AnimalType judge = GetAnimalType("");
+            switch (judge) {
+                case AnimalType.PIG:
+                    if (p == null) {
+                        p = new Pig(words); /* 初始化，下同 */
+                    }
+                    Say = new AnimalSaying(p.saying); /* 注册事件，下同 */
+                    break;
+                case AnimalType.DOG:
+                    if (d == null) {
+                        d = new Dog(words);
+                    }
+                    Say = new AnimalSaying(d.saying);
+                    break;
+                case AnimalType.CAT:
+                    if (c == null) {
+                        c = new Cat(words);
+                    }
+                    Say = new AnimalSaying(c.saying);
+                    break;
+                default:
+                    break;
+            }
+            Say(this, new myEventArgs(false)); /* 执行事件 */
+        }
+
+        /* 确认按钮点击 */
+        private void ack_Click(object sender, RoutedEventArgs e) {
             AnimalType judge = GetAnimalType(member.Text); /* 获取动物类型 */
             switch (judge) {
                 case AnimalType.PIG:
@@ -120,7 +157,15 @@ namespace HW01 {
             }
             words.Text = ""; /* 清空TextBlock */
             member.Text = ""; /* 清空TextBox */
-            Say(this); /* 执行事件 */
+            Say(this, new myEventArgs(true)); /* 执行事件 */
+        }
+
+        //自定义一个Eventargs传递事件参数
+        class myEventArgs : EventArgs {
+            public bool flag = false;
+            public myEventArgs(bool f) {
+                this.flag = f;
+            }
         }
     }
 }
