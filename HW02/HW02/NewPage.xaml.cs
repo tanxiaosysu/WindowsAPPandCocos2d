@@ -53,7 +53,7 @@ namespace HW02 {
                 str += "Empty Information!\n";
             }
             /* 检查日期是否合法 */
-            if (TodoDate.Date <= DateTime.Now.Date) {
+            if (TodoDate.Date < DateTime.Now.Date) {
                 str += "Error Date!";
             }
             /* 对话框提醒 */
