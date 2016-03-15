@@ -1,0 +1,163 @@
+<Page x:Class="HW03.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:local="using:HW03"
+      xmlns:md="using:HW03.Models"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      mc:Ignorable="d">
+
+    <Page.BottomAppBar>
+        <CommandBar>
+            <AppBarButton Icon="Add"
+                          Click="AppBarAddClick" />
+        </CommandBar>
+    </Page.BottomAppBar>
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState x:Name="VisualStateMin0">
+                    <VisualState.Setters>
+                        <Setter Target="TodoList.(Grid.ColumnSpan)"
+                                Value="2" />
+                    </VisualState.Setters>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState x:Name="VisualStateMin800">
+                    <VisualState.Setters>
+                        <Setter Target="TodoItemEditor.Visibility"
+                                Value="Visible" />
+                    </VisualState.Setters>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="800" />
+                    </VisualState.StateTriggers>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <TextBlock x:Name="Title"
+                   TextWrapping="Wrap"
+                   Text="Todos"
+                   VerticalAlignment="Top"
+                   Margin="20"
+                   Grid.Row="0"
+                   Style="{StaticResource HeaderTextBlockStyle}" />
+
+        <Grid x:Name="ContentGrid"
+              Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <ListView x:Name="TodoList"
+                      Grid.Column="0"
+                      ItemsSource="{x:Bind ViewModel.AllItems}"
+                      IsItemClickEnabled="True"
+                      ItemClick="TodoListItemClick">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="md:TodoListItem">
+                        <UserControl>
+                            <Grid Height="100">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="42" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup>
+                                        <VisualState x:Name="VisualStateMin550">
+                                            <VisualState.Setters>
+
+                                                <Setter Target="image.Visibility"
+                                                        Value="Visible" />
+                                            </VisualState.Setters>
+                                            <VisualState.StateTriggers>
+                                                <AdaptiveTrigger MinWindowWidth="550" />
+                                            </VisualState.StateTriggers>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+
+                                <CheckBox Grid.Column="0" />
+                                
+                                <Image x:Name="image"
+                                       Grid.Column="1"
+                                       Height="90"
+                                       Width="90"
+                                       Source="Assets/background.jpg"
+                                       Visibility="Collapsed" />
+                                
+                                <TextBlock TextWrapping="Wrap"
+                                           Text="{x:Bind title}"
+                                           VerticalAlignment="Center"
+                                           Grid.Column="2"
+                                           Margin="20,0" />
+                                
+                                <Line Grid.Column="2"
+                                      Stretch="Fill"
+                                      Stroke="Black"
+                                      StrokeThickness="2"
+                                      X1="1"
+                                      VerticalAlignment="Center"
+                                      HorizontalAlignment="Stretch"
+                                      Visibility="Collapsed" />
+                            </Grid>
+                        </UserControl>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <Grid x:Name="TodoItemEditor"
+                  Grid.Column="1"
+                  Visibility="Collapsed">
+                <ScrollViewer Margin="20">
+                    <StackPanel Width="350">
+                        <Image x:Name="EditorImage"
+                               Grid.Column="1"
+                               Source="Assets/background.jpg"
+                               Height="180"
+                               Stretch="UniformToFill" />
+                        <AppBarButton x:Name="SelectPictureButton"
+                                      Icon="Pictures"
+                                      Label="select"
+                                      HorizontalAlignment="Right"
+                                      RelativePanel.AlignRightWithPanel="True"
+                                      Click="SelectPictureClick" />
+                        <TextBox x:Name="EditorTitle"
+                                 Header="Title"
+                                 Margin="0,12,0,0" />
+                        <TextBox x:Name="EditorDetails"
+                                 Height="96"
+                                 Margin="0,12,0,0"
+                                 Header="Details" />
+                        <DatePicker x:Name="EditorDate"
+                                    Margin="0,12,0,0"
+                                    Header="Due Date"
+                                    HorizontalAlignment="Center" />
+                        <RelativePanel Margin="0,24,0,0">
+                            <Button x:Name="EditorEdit"
+                                    Content="Create"
+                                    RelativePanel.AlignLeftWithPanel="True"
+                                    Width="80" />
+                            <Button x:Name="EditorCancel"
+                                    Content="Cancel"
+                                    RelativePanel.AlignRightWithPanel="True"
+                                    Width="80"
+                                    Click="TodoCancelClick" />
+                        </RelativePanel>
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+        </Grid>
+    </Grid>
+</Page>
