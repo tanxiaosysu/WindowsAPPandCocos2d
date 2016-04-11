@@ -1,0 +1,43 @@
+<Page x:Class="HW07.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:local="using:HW07"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0"
+                   Text="有道词典查询"
+                   Style="{StaticResource HeaderTextBlockStyle}" />
+
+        <TextBox Grid.Row="1"
+                 x:Name="DictContent"
+                 Header="查询内容："
+                 Style="{StaticResource ContentTextBoxStyle}" />
+
+        <TextBlock Grid.Row="2"
+                   x:Name="DictResult"
+                   Style="{StaticResource ContentTextBlockStyle}" />
+
+        <StackPanel Grid.Row="3"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center">
+            <Button Click="JsonQueryClick"
+                    Content="查询(json)"
+                    Style="{StaticResource ButtonStyle}"
+                    Width="150" />
+
+            <Button Click="XmlQueryClick"
+                    Content="查询(xml)"
+                    Style="{StaticResource ButtonStyle}"
+                    Width="150" />
+        </StackPanel>
+    </Grid>
+</Page>
