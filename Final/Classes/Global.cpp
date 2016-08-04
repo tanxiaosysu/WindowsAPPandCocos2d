@@ -1,0 +1,85 @@
+#include "Global.h"
+
+#include "json/rapidjson.h"
+#include "json/document.h"
+
+#include <regex>
+#include <sstream>
+
+using std::regex;
+using std::match_results;
+using std::regex_match;
+using std::cmatch;
+
+const string Global::BASE_URL = "http://localhost:8080/";
+const string Global::REQ_TYPE_LOGIN = "login";
+const string Global::REQ_TYPE_RANK = "rank";
+const string Global::REQ_TYPE_SUBMIT = "submit";
+
+string Global::gameSessionId = "";
+string Global::username = "";
+long Global::score = 0;
+bool Global::ifWin = false;
+
+Global::Global() {}
+
+Global::~Global() {}
+
+string Global::integerToString(unsigned int i) {
+    std::string result;
+    std::ostringstream out;
+    out << i;
+    std::istringstream in(out.str());
+    in >> result;
+    return result;
+}
+
+string Global::toString(vector<char> *buffer) {
+    string rst;
+    for (char ch : *buffer) {
+        rst.push_back(ch);
+    }
+    return rst;
+}
+
+string Global::getSessionIdFromHeader(string head) {
+    regex nlp("\\r\\n");
+    string header = regex_replace(head, nlp, " ");
+    regex pattern(".*GAMESESSIONID=(.*) Content-Type.*");
+    //match_results<std::string::const_iterator> result;
+    cmatch result;
+    bool valid = regex_match(header.c_str(), result, pattern);
+
+    if (!valid) {
+        return "";
+    }
+    return result[1];
+}
+
+void* Global::getValueFromJson(const string & json, const string & name) {
+    rapidjson::Document document;
+    document.Parse(json.c_str());
+    if (document.HasParseError()) {
+        return NULL;
+    }
+    if (document.IsObject() && document.HasMember(name.c_str())) {
+        auto result = document[name.c_str()].GetType(); /* 获取类型 */
+        /* 返回指针 */
+            int i = 20;
+        switch (result) {
+        case rapidjson::kTrueType:
+        case rapidjson::kFalseType:
+            return (void*)(document[name.c_str()].GetBool());
+            break;
+        case rapidjson::kStringType:
+            return static_cast<void*>(new string(document[name.c_str()].GetString()));
+            break;
+        case rapidjson::kNumberType:
+            return (void*)(document[name.c_str()].GetInt());
+            break;
+        default:
+            break;
+        }
+    }
+    return NULL;
+}
